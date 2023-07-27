@@ -214,7 +214,7 @@ module Dalli
       def log_warn_message(err_or_string)
         Dalli.logger.warn do
           err = err_or_string.is_a?(Exception) ? err_or_string.exception : RuntimeError.new(err_or_string.to_s)
-          err.set_backtrace(err.backtrace[0..9])
+          err.set_backtrace(err.backtrace[0...20])
           err.exception(err.message + "#{name} failed (count: #{@fail_count})")
         end
       end
