@@ -212,10 +212,10 @@ module Dalli
       end
 
       def log_warn_message(err_or_string)
-        detail = err_or_string.is_a?(String) ? err_or_string : "#{err_or_string.class}: #{err_or_string.message}"
         Dalli.logger.warn do
-          detail = err_or_string.is_a?(String) ? err_or_string : "#{err_or_string.class}: #{err_or_string.message}"
-          "#{name} failed (count: #{@fail_count}) #{detail}"
+          err = err_or_string.is_a?(Exception) ? err_or_string.exception : RuntimeError.new(err_or_string.to_s)
+          err.set_backtrace(err.backtrace[0..9])
+          err.exception(err.message + "#{name} failed (count: #{@fail_count})")
         end
       end
 
